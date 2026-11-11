@@ -2,6 +2,8 @@
 
 Multimodal NLP and deep learning project for news-risk detection. The system combines article text, article images, named entity recognition, sentiment analysis, and a fine-tuned causal language model to produce a structured alert decision in JSON.
 
+The accompanying paper is available at [`docs/ALARM_Paper.pdf`](docs/ALARM_Paper.pdf).
+
 ![Project architecture](data/architecture.png)
 
 ## Overview
@@ -44,13 +46,12 @@ The final decision is built from:
 │   ├── articles_expert_benchmark_with_alerts.csv
 │   ├── articles_expert_benchmark_with_expert_scores.csv
 │   ├── expert_images/
-│   ├── golden_fine_tuning_alerts.csv
-│   └── SaveDaDataFrame.ipynb
+│   └── golden_fine_tuning_alerts.csv
+├── docs/
+│   └── ALARM_Paper.pdf
 ├── models/
 │   ├── ner_models/best_ner_model.pth
 │   └── sa_models/ConvBiLSTM_v2.0.0_12-04-2026.pt
-├── results/
-│   └── alert_finetuning/benchmark_base_vs_finetuned.json
 ├── src/
 │   ├── Models/
 │   │   ├── BiLSTM_CRF.py
@@ -315,6 +316,11 @@ If you want to run everything in the right order, this is the practical sequence
 3. Make sure you have an alert model locally in `models/alert_finetuned_merged/`, or allow the pipeline to download it from Hugging Face.
 4. Run the inference pipeline on one article or on a batch CSV.
 5. Save the JSON output with `--output`.
+
+Unless you pass a precomputed `--ner` value, the NER stage rebuilds its vocabularies from data files that are not committed to the repository. Download them and place them in `data/` before running the example below:
+
+- `data/eng.train`, `data/eng.testa`, `data/eng.testb`: the CoNLL-2003 English NER dataset
+- `data/glove.6B.100d.txt`: GloVe 6B 100d embeddings from https://nlp.stanford.edu/projects/glove/
 
 Example:
 
